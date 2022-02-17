@@ -30,7 +30,11 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            // services.AddCors(opt =>{
+            //     opt.AddPolicy("CorsPolicy", policy =>{
+            //         policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+            //     });
+            // });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -39,6 +43,8 @@ namespace API
             services.AddDbContext<DataContext>(opt =>{
                 opt.UseSqlite(_config.GetConnectionString("DefaultConnection"));
             });
+            services.AddCors();     
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,9 +57,19 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            
+
+            app.UseCors(policy => policy
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                //.WithOrigins("localhost:3000")
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()
+                ); // allow credentials
 
             app.UseAuthorization();
 
