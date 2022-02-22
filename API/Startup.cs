@@ -14,7 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Persistence;
+using Application.Core;
 using Microsoft.EntityFrameworkCore;
+using API.Extensions;
 
 namespace API
 {
@@ -38,15 +40,8 @@ namespace API
             //     });
             // });
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-            });
-            services.AddDbContext<DataContext>(opt =>{
-                opt.UseSqlite(_config.GetConnectionString("DefaultConnection"));
-            });
-            services.AddCors();
-            services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddApplicationServices(_config);
+           
 
         }
 
