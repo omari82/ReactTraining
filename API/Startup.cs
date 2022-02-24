@@ -17,6 +17,8 @@ using Persistence;
 using Application.Core;
 using Microsoft.EntityFrameworkCore;
 using API.Extensions;
+using FluentValidation.AspNetCore;
+using API.Middleware;
 
 namespace API
 {
@@ -39,7 +41,11 @@ namespace API
             //         policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
             //     });
             // });
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<Create>();
+
+            });
             services.AddApplicationServices(_config);
            
 
@@ -48,6 +54,7 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ExceptionMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -64,7 +71,7 @@ namespace API
             app.UseCors(policy => policy
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                //.WithOrigins("localhost:3000")
+                .WithOrigins("localhost:3000")
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials()
                 ); // allow credentials
