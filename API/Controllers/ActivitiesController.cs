@@ -7,6 +7,7 @@ using Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -20,6 +21,7 @@ namespace API.Controllers
         {
             return HandleResult( await Mediator.Send(new List.Query()));
         }
+     
         [HttpGet("{id}")]
         public async Task<IActionResult> GetActivity(Guid id)
         { 

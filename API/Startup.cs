@@ -16,6 +16,8 @@ using Microsoft.OpenApi.Models;
 using Persistence;
 using Application.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using API.Extensions;
 using FluentValidation.AspNetCore;
 using API.Middleware;
@@ -36,17 +38,18 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddCors(opt =>{
-            //     opt.AddPolicy("CorsPolicy", policy =>{
-            //         policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
-            //     });
-            // });
+            services.AddControllers( opt =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            });
             services.AddControllers().AddFluentValidation(config =>
             {
                 config.RegisterValidatorsFromAssemblyContaining<Create>();
 
             });
             services.AddApplicationServices(_config);
+            services.AddIdentityServices(_config);
            
 
         }
@@ -75,7 +78,8 @@ namespace API
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials()
                 ); // allow credentials
-
+                
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
