@@ -71,7 +71,7 @@ namespace API
             app.UseCors(policy => policy
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .WithOrigins("localhost:3000")
+               /// .WithOrigins("localhost:3000")
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials()
                 ); // allow credentials
