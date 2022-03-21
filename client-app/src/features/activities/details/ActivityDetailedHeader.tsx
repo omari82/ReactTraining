@@ -54,11 +54,13 @@ export default observer (function ActivityDetailedHeader({activity}: Props) {
             <Segment clearing attached='bottom'>
                 {activity.isHost ?(
                 <>
-                <Button color={activity.isCancelled ? 'green' : 'red'}
+                <Button 
+                color={activity.isCancelled ? 'green' : 'red'}
                 floated='left'
                 basic
                 content={activity.isCancelled? 'Re-activate Activity' : 'Cancel Activity'}
                 onClick={cancelActivityToggle}
+                loading={loading}
                
                 />
                 <Button as={Link} 

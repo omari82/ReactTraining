@@ -53,7 +53,7 @@ export default class ActivityStore{
            return activity;
        }
        else{
-           this.loading = true;
+           this.loading = false;
            try{
             activity = await agent.Activities.details(id);
             this.setActivity(activity);
@@ -146,7 +146,7 @@ export default class ActivityStore{
 
    updateAttendance = async () =>{
        const user = store.userStore.user;
-       this.loading = true;
+       this.loading = false;
        try{
             await agent.Activities.attend(this.selectedActivity!.id);
             runInAction(() => {
@@ -172,7 +172,7 @@ export default class ActivityStore{
    }
 
    cancelActivityToggle = async () =>{
-       this.loading = true;
+       this.loading = false;
        try{
             await agent.Activities.attend(this.selectedActivity!.id);
             runInAction(() => {
@@ -186,6 +186,10 @@ export default class ActivityStore{
        finally{
            runInAction(() => this.loading = false)
        }
+   }
+
+   clearSelectedActivity = () => {
+       this.selectedActivity = undefined;
    }
 }
 
