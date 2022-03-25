@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite';
-import { allowStateChangesEnd } from 'mobx/dist/internal';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { List, Image, Popup } from 'semantic-ui-react';
@@ -10,6 +9,10 @@ interface Props {
     attendees: Profile[];
 }
 export default observer(function ActivityListItemAttendee({attendees} : Props) {
+    const styles={
+        borderColor : 'orange',
+        borderWeidth: 4
+    }
     return(
     <List horizontal>
         {attendees.map(attendee => (
@@ -18,7 +21,12 @@ export default observer(function ActivityListItemAttendee({attendees} : Props) {
                 key={attendee.displayName}
                 trigger={
                 <List.Item key={attendee.username} as={Link} to={`/profiles/${attendee.username}`}>
-                     <Image size='mini' circular src={attendee.image ||'/assets/user.png'} />
+                     <Image 
+                     size='mini' 
+                     circular 
+                     src={attendee.image ||'/assets/user.png'}
+                     bordered
+                     style={attendee.following? styles: null} />
                 </List.Item>
                 }
             >
