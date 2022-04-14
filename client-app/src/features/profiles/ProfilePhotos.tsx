@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState, SyntheticEvent } from 'react';
+import React, {useState, SyntheticEvent } from 'react';
 import { Card, Header, Tab, Image, Grid, Button } from 'semantic-ui-react';
-import { setSyntheticTrailingComments } from 'typescript';
 import PhotoUploadWidget from '../../app/common/imageUpload/PhotoUploadWidget';
 import { Photo, Profile } from '../../app/models/profile';
 import { useStore } from '../../app/stores/store';

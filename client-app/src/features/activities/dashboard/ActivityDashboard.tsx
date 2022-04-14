@@ -3,7 +3,6 @@ import { Grid, GridColumn, Loader } from 'semantic-ui-react';
 import { useStore } from '../../../app/stores/store';
 import ActivityList from './ActivityList';
 import {observer} from 'mobx-react-lite';
-import LoadingComponent from '../../../app/layout/LoadingComponents';
 import ActivityFilters from './ActivityFilters';
 import { PagingParams } from '../../../app/models/pagination';
 import InfiniteScroll from 'react-infinite-scroller';

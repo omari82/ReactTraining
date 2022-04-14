@@ -19,6 +19,14 @@ namespace Persistence
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            foreach (var property in builder.Model.GetEntityTypes()
+                    .SelectMany(t => t.GetProperties()
+                    .Where(p => p.ClrType == typeof(DateTime)
+                     || p.ClrType ==typeof(DateTime?)
+                    )))
+                    {
+                        property.SetColumnType("timestamp without time zone");
+                    }
             base.OnModelCreating(builder);
 
             builder.Entity<ActivityAttendee>(x => x.HasKey(aa => new {aa.AppUserId,aa.ActivityId}));
