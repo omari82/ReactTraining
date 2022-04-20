@@ -23,6 +23,7 @@ export default class UserStore{
         try{
             const user = await agent.Account.login(creds);
             store.commonStore.setToken(user.token);
+            this.startRefreshTokenTimer(user);
             runInAction(() =>  this.user = user);
             history.push('/activities');
             store.modalStore.closeModal();
@@ -41,7 +42,9 @@ export default class UserStore{
     getUser = async () =>{
         try{
             const user = await agent.Account.current();
+            store.commonStore.setToken(user.token);
             runInAction(() => this.user = user);
+            this.startRefreshTokenTimer(user);
         }catch(error){
             console.log(error);
         }
@@ -51,6 +54,7 @@ export default class UserStore{
         try{
             const user = await agent.Account.register(creds);
             store.commonStore.setToken(user.token);
+            this.startRefreshTokenTimer(user);
             runInAction(() =>  this.user = user);
             history.push('/activities');
             store.modalStore.closeModal();        

@@ -60,7 +60,17 @@ namespace API.Extensions
             // or from the environment variable from Heroku, use it to set up your DbContext.
                     options.UseNpgsql(connStr);
             });
-            services.AddCors();
+            services.AddCors(opt => {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy 
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                        .WithExposedHeaders("WWW-Authenticate", "Pagination")
+                        .WithOrigins("http://localhost:3000");
+                });
+            });
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IUserAccessor, UserAccessor>();
